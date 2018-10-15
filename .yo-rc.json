@@ -1,0 +1,11 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "isCreatingSolution": true,
+    "environment": "spo",
+    "version": "1.5.1",
+    "libraryName": "spfx-starter-wp-people-directory",
+    "libraryId": "f2732b22-f945-4ce3-b6d0-908d7a903ca3",
+    "packageManager": "npm",
+    "componentType": "webpart"
+  }
+}
