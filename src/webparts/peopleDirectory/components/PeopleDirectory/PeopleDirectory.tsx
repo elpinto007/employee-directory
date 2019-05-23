@@ -91,8 +91,9 @@ export class PeopleDirectory extends React.Component<IPeopleDirectoryProps, IPeo
 
     // retrieve information about people using SharePoint People Search
     // sort results ascending by the last name
+    // TODO: #Replace the Workemail with your company domain in the search query to filter out accounts that have the email address attached#
     this.props.spHttpClient
-      .get(`${this.props.webUrl}/_api/search/query?querytext='${query}'&selectproperties='PreferredName,WorkEmail,PictureURL,WorkPhone'&sortlist='LastName:ascending'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500`, SPHttpClient.configurations.v1, {
+      .get(`${this.props.webUrl}/_api/search/query?querytext='${query}'&refinementfilters='and(WorkEmail:("*@hotmail.com.*"),SPS-HideFromAddressLists:(0))'&selectproperties='PreferredName,WorkEmail,PictureURL,WorkPhone,JobTitle,Department'&sortlist='LastName:ascending'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=100`, SPHttpClient.configurations.v1, {
         headers: headers
       })
       .then((res: SPHttpClientResponse): Promise<IPeopleSearchResults> => {
@@ -119,14 +120,24 @@ export class PeopleDirectory extends React.Component<IPeopleDirectoryProps, IPeo
         }
 
         // convert the SharePoint People Search results to an array of people
-        const people: IPerson[] = res.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {
+        var people: IPerson[] = res.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {
+          
           return {
             name: this._getValueFromSearchResult('PreferredName', r.Cells),
             phone: this._getValueFromSearchResult('WorkPhone', r.Cells),
             email: this._getValueFromSearchResult('WorkEmail', r.Cells),
-            photoUrl: this._getValueFromSearchResult('PictureURL', r.Cells)
+            photoUrl: this._getValueFromSearchResult('PictureURL', r.Cells),
+            jobTitle: this._getValueFromSearchResult('JobTitle', r.Cells),
+            department: this._getValueFromSearchResult('Department', r.Cells)
           };
         });
+
+        // remove accounts without a job title from people list
+        people = people.filter(function(Person){
+          if(Person.jobTitle)
+            return Person;
+        });
+        
         // notify the user that loading the data is finished and return the loaded information
         this.setState({
           loading: false,
@@ -158,7 +169,7 @@ export class PeopleDirectory extends React.Component<IPeopleDirectoryProps, IPeo
    */
   private _getValueFromSearchResult(key: string, cells: ICell[]): string {
     for (let i: number = 0; i < cells.length; i++) {
-      if (cells[i].Key === key) {
+      if ((cells[i].Key === key)) {
         return cells[i].Value;
       }
     }

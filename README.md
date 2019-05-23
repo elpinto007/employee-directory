@@ -22,5 +22,5 @@ This package produces the following:
 gulp clean - TODO
 gulp test - TODO
 gulp serve - TODO
-gulp bundle - TODO
-gulp package-solution - TODO
+gulp bundle --ship
+gulp package-solution --ship

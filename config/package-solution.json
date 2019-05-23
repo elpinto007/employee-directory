@@ -3,7 +3,7 @@
   "solution": {
     "name": "spfx-starter-wp-people-directory-client-side-solution",
     "id": "f2732b22-f945-4ce3-b6d0-908d7a903ca3",
-    "version": "1.0.0.0",
+    "version": "1.0.0.12",
     "includeClientSideAssets": true
   },
   "paths": {

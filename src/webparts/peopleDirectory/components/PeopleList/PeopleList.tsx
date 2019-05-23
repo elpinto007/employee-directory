@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styles from './PeopleList.module.scss';
 import { IPeopleListProps } from '.';
 import {
   Persona,
@@ -6,10 +7,11 @@ import {
 } from 'office-ui-fabric-react/lib/Persona';
 import * as strings from 'PeopleDirectoryWebPartStrings';
 
+
 export class PeopleList extends React.Component<IPeopleListProps, {}> {
   public render(): React.ReactElement<IPeopleListProps> {
     return (
-      <div>
+      <div className={styles.peopleList} >
         {this.props.people.length === 0 &&
           (this.props.selectedIndex !== 'Search' ||
             (this.props.selectedIndex === 'Search' &&
@@ -19,10 +21,23 @@ export class PeopleList extends React.Component<IPeopleListProps, {}> {
               // a search query (but not when navigated to the Search tab without
               // providing a query yet)
           <div className='ms-textAlignCenter'>{strings.NoPeopleFoundLabel}</div>}
-        {this.props.people.length > 0 &&
-          // for each retrieved person, create a persona card with the retrieved
-          // information
-          this.props.people.map(p => <Persona primaryText={p.name} secondaryText={p.email} tertiaryText={p.phone} imageUrl={p.photoUrl} imageAlt={p.name} size={PersonaSize.size72} />)}
+          {this.props.people.length > 0 &&
+            // for each retrieved person, create a persona card with the retrieved
+            // information
+            this.props.people.map(p => 
+              <div className={styles.peopleCard}>
+                <Persona 
+                  primaryText={p.name} 
+                  secondaryText={p.email} 
+                  tertiaryText={p.jobTitle + ", " + p.department}
+                  optionalText={p.phone} 
+                  imageUrl={p.photoUrl} 
+                  imageAlt={p.name} 
+                  size={PersonaSize.extraLarge}
+                  className='custom-persona'
+                  />
+              </div>
+            )} 
       </div>
     );
   }
