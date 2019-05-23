@@ -1,0 +1,21 @@
+@import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
+
+.peopleList{
+    margin:0px;
+}
+
+.peopleCard{
+    width: 330px;
+    height: 100px;
+    display: inline-block;
+    border: 1px solid #e1e1e1;
+    margin: 0 15px 15px 0;
+    padding: 10px;
+    vertical-align: top;
+}
+.custom-persona{
+    background-color: beige;
+}
+.persona-department{
+    display: inline;
+}
